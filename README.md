@@ -15,7 +15,8 @@ This project implements a basic shell (command-line interpreter) in C for Unix/L
 ## Compilation Instructions
 ```bash
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
-
+```
 ## Usage
 ```bash
 ./hsh
+```
