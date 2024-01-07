@@ -22,12 +22,9 @@ Usage
 
 Supported Commands
 
-Operating system commands (ls, cat, echo, etc.).
+Operating system commands (ls, cat, echo).
 Basic support for redirection and pipes.
 
-Contributions
-
-Contributions are welcome. If you find bugs or potential improvements, feel free to create a pull request.
-License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
+#Members
+<p>Manuela Marin</p>
+<p>Camilo Fetecua</p>
