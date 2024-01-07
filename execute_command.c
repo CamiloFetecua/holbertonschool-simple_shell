@@ -1,30 +1,28 @@
 #include "header.h"
+#include <errno.h>
 
 void execute_command(char *command) {
-    pid_t pid;
+    pid_t pid, wpid;
     int status;
 
     pid = fork();
 
+    if (pid == -1) {
+        perror("Error fork");
+        exit(EXIT_FAILURE);
+    }
+
     if (pid == 0) {  /* Proceso hijo */
-        char **argv = malloc(2 * sizeof(char *));
-        if (argv == NULL) {
-            perror("Error");
-            exit(EXIT_FAILURE);
-        }
-        
+        char *argv[] = {NULL, NULL};
         argv[0] = command;
-        argv[1] = NULL;
 
         if (execvp(argv[0], argv) == -1) {
             perror("Error");
-            free(argv);  /* Liberar la memoria en caso de error*/
             exit(EXIT_FAILURE);
         }
-        free(argv);  /*Liberar la memoria después de execvp (si se ejecuta correctamente)*/
-    } else if (pid < 0) {
-        perror("Error");
     } else {  /* Proceso padre */
-        waitpid(pid, &status, 0);  /*Esperar al proceso hijo*/
+        do {
+            wpid = waitpid(pid, &status, 0);
+        } while (wpid == -1 && errno == EINTR);
     }
 }
