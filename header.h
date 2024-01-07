@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <stdarg.h>
@@ -15,7 +14,9 @@
 
 
 
+#define BUFFER_SIZE 1024
 
-
+void display_prompt(void);
+void execute_command(char *command);
 
 #endif
