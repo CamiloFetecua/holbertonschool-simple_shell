@@ -1,0 +1,50 @@
+# User Manual - Simple Shell (hsh)
+
+## Description
+The Simple Shell (hsh) is a basic command-line interpreter implemented in C for Unix/Linux operating systems. It provides a command-line interface for executing operating system commands.
+
+## Key Features
+- Executes operating system commands.
+- Basic support for redirection and pipes.
+- Parent and child process management.
+- Basic error handling.
+
+## Installation
+1. Download the source code for the Simple Shell (hsh).
+2. Open a terminal and navigate to the directory where you downloaded the code.
+3. Compile the program using the following command:
+   ```bash
+   gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+```
+
+## Usage
+1. Run the shell with the following command:
+```bash
+./hsh
+```
+2. Enter commands at the command prompt followed by "Enter" to execute them.
+3. You can use operating system commands such as ls, cat, echo, etc.
+4. To exit the shell, you can use the exit command or press Ctrl + D.
+
+## Redirection
+
+The Simple Shell supports basic input and output redirection. You can use the following symbols:
+* `>` to redirect output to a file.
+	ls > output.txt
+* `<` to redirect input from a file.
+	./hsh < input.txt
+
+## Pipes
+
+The Simple Shell supports basic pipes to connect the output of one command to the input of another. You can use the | symbol for this.
+ ```bash
+ls | grep "file"
+```
+
+## AUTHORS
+
+    Manuela Marin
+    Camilo Fetecua
+
+## BUGS
+No known bugs.
