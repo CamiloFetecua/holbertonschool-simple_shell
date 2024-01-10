@@ -9,10 +9,14 @@
 #include <string.h>
 #include <stddef.h>
 
+
 #define BUFFER_SIZE 1024
 
 void display_prompt(void);
 void execute_command(char *command);
+void search_and_execute_command(char *command);
+int handle_command(const char *command);
+
 
 #endif 
 
