@@ -1,6 +1,11 @@
 #include "header.h"
 #include <errno.h>
 
+/**
+ * main - Entry point for the simple shell program.
+ * This function initializes the shell and handles user input.
+ * Return: EXIT_SUCCESS upon successful completion.
+ */
 int main(void) {
     char size_in[BUFFER_SIZE];
     char *newline_ptr;
@@ -24,6 +29,11 @@ int main(void) {
             }
         }
 
+	/* Llamar a la función handle_command */
+        if (handle_command(size_in)) {
+            continue;  /* Si el comando fue manejado, continúa con el siguiente ciclo*/
+        }
+
         pid = fork();
 
         if (pid == 0) {  /* Proceso hijo*/
@@ -41,6 +51,11 @@ int main(void) {
     return EXIT_SUCCESS;
 }
 
+/**
+ * display_prompt - Displays the shell prompt.
+ * This function takes no parameters.
+ * Return: void
+ */
 void display_prompt() {
     printf("👉 ");
     fflush(stdout);
