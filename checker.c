@@ -1,44 +1,106 @@
 #include "header.h"
 
-extern char **environ;
-
 /**
- * handle_exit - Handles the 'exit' shell command by printing a message and exiting the shell.
- * This function takes no parameters.
- * Return: void
+ * cd_b - Changes the current working directory to the parameter passed to cd.
+ * if no parameter is passed it will change directory to HOME.
+ * @line: A string representing the input from the user.
  */
-void handle_exit() {
-    printf("Exiting shell...\n");
-    exit(EXIT_SUCCESS);
+void cd_b(char *line)
+{
+	int index;
+	int token_count;
+	char **param_array;
+	const char *delim = "\n\t ";
+
+	token_count = 0;
+	param_array = token_interface(line, delim, token_count);
+	if (param_array[0] == NULL)
+	{
+		single_free(2, param_array, line);
+		return;
+	}
+	if (param_array[1] == NULL)
+	{
+		index = find_path("HOME");
+		chdir((environ[index]) + 5);
+	}
+	else if (_strcmp(param_array[1], "-") == 0)
+		print_str(param_array[1], 0);
+
+	else
+		chdir(param_array[1]);
+	double_free(param_array);
 }
 
 /**
- * handle_env - Handles the 'env' shell command by printing current environment variables.
- * This function takes no parameters.
- * Return: void
+ * env_b - Prints all the environmental variables in the current shell.
+ * @line: A string representing the input from the user.
  */
+void env_b(__attribute__((unused))char *line)
+{
+	int i;
+	int j;
 
-void handle_env() {
-    char **env_var = environ;
-    while (*env_var) {
-        printf("%s\n", *env_var);
-        env_var++;
-    }
+	for (i = 0; environ[i] != NULL; i++)
+	{
+		for (j = 0; environ[i][j] != '\0'; j++)
+			write(STDOUT_FILENO, &environ[i][j], 1);
+		write(STDOUT_FILENO, "\n", 1);
+	}
 }
 
 /**
- * handle_command - Handles various shell commands.
- * @command: The command to handle.
- * Return: 1 if the command was handled, 0 otherwise.
+ * exit_b - Exits the shell. After freeing allocated resources.
+ * @line: A string representing the input from the user.
  */
-int handle_command(const char *command) {
-    if (strcmp(command, "exit") == 0) {
-        handle_exit();
-        return 1; /* Indica que el comando fue manejado */
-    } else if (strcmp(command, "env") == 0) {
-        handle_env();
-        return 1;  /*Indica que el comando fue manejado */
-    }
+void exit_b(char *line)
+{
+	free(line);
+	print_str("\n", 1);
+	exit(1);
+}
 
-    return 0;  /*Indica que el comando no fue manejado */
+/**
+ * check_built_ins - Finds the right function needed for execution.
+ * @str: The name of the function that is needed.
+ * Return: Upon sucess a pointer to a void function. Otherwise NULL.
+ */
+void (*check_built_ins(char *str))(char *str)
+{
+	int i;
+
+	builtin_t buildin[] = {
+		{"exit", exit_b},
+		{"env", env_b},
+		{"cd", cd_b},
+		{NULL, NULL}
+	};
+
+	for (i = 0; buildin[i].built != NULL; i++)
+	{
+		if (_strcmp(str, buildin[i].built) == 0)
+		{
+			return (buildin[i].f);
+		}
+	}
+	return (NULL);
+}
+
+/**
+ * built_in - Checks for builtin functions.
+ * @command: An array of all the arguments passed to the shell.
+ * @line: A string representing the input from the user.
+ * Return: If function is found 0. Otherwise -1.
+ */
+int built_in(char **command, char *line)
+{
+	void (*build)(char *);
+
+	build = check_built_ins(command[0]);
+	if (build == NULL)
+		return (-1);
+	if (_strcmp("exit", command[0]) == 0)
+		double_free(command);
+	build(line);
+	return (0);
 }
