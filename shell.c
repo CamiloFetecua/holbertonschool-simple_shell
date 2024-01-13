@@ -51,7 +51,7 @@ int handle_prompt(size_t *length, char **line)
 
 	if (is_interactive)
 	{
-		write(STDOUT_FILENO, "👀👉 ", 2);
+		write(STDOUT_FILENO, "👀👉 ", 9);
 	} /* end if */
 	bytes_read = getline(line, length, stdin);
 	if (bytes_read == -1)
@@ -164,6 +164,8 @@ int main(int argc __attribute__((unused)), char **argv)
 	int cnt, result;
 	char *fullpath;
 	int exit_status = 0;
+
+	signal(SIGINT, SIG_IGN);
 
 	while (1)
 	{
