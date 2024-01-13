@@ -51,7 +51,7 @@ int handle_prompt(size_t *length, char **line)
 
 	if (is_interactive)
 	{
-		write(STDOUT_FILENO, "$ ", 2);
+		write(STDOUT_FILENO, "👀👉 ", 2);
 	} /* end if */
 	bytes_read = getline(line, length, stdin);
 	if (bytes_read == -1)
