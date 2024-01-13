@@ -42,33 +42,21 @@ char *build_path(char *, char *);
 void double_free(char **);
 void single_free(int, ...);
 
-<<<<<<< HEAD
-/*Builtin functions*/
-=======
-/*Checker*/
->>>>>>> bb971df6ee3278a712d17adb697d47d38e863378
+/*CHEKER*/
 int built_in(char **, char *);
 void (*check_built_ins(char *))(char *);
 void exit_b(char *);
 void env_b(char *);
 void cd_b(char *);
 
-<<<<<<< HEAD
-/*Holberton library functions*/
-=======
-/*functions clon*/
->>>>>>> bb971df6ee3278a712d17adb697d47d38e863378
+/*functions clone*/
 int _strcmp(char *, char *);
 char *_strdup(char *);
 void print_str(char *, int);
 int print_number(int);
 int _write_char(char);
 
-<<<<<<< HEAD
-/* Helper functions*/
-=======
-/* command */
->>>>>>> bb971df6ee3278a712d17adb697d47d38e863378
+/* command*/
 void error_printing(char *, int, char *);
 void exec_error(char *, int, char *);
 
