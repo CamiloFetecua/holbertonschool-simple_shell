@@ -1,174 +1,146 @@
 #include "header.h"
-/**
- * parse_line - Parses the command line looking for commands and argumements.
- * This function it is also in charged of freeing memory that is not longer
- * needed by the program.
- * @line: A pointer to a string. Will always be NULL upon function entry.
- * @size: A holder for numbers of size_t. Will always be initilized to 0.
- * @command_counter: A counter keeping track of how many commands have been
- * entered into the shell.
- * @av: Name of the program running the shell
- */
-void parse_line(char *line, size_t size, int command_counter, char **av)
-{
-	int i;
-	ssize_t read_len;
-	int token_count;
-	char **param_array;
-	const char *delim = "\n\t ";
-
-	token_count = 0;
-	write(STDOUT_FILENO, PROMPT, str_len(PROMPT));
-	read_len = getline(&line, &size, stdin);
-	if (read_len != -1)
-	{
-		param_array = token_interface(line, delim, token_count);
-		if (param_array[0] == NULL)
-		{
-			single_free(2, param_array, line);
-			return;
-		}
-		i = built_in(param_array, line);
-		if (i == -1)
-			create_child(param_array, line, command_counter, av);
-		for (i = 0; param_array[i] != NULL; i++)
-			free(param_array[i]);
-		single_free(2, param_array, line);
-	}
-	else
-		exit_b(line);
-}
 
 /**
- * create_child - Creates a child in order to execute another program.
- * @param_array: An array of pointers to strings containing the possible name
- * of a program and its parameters. This array is NULL terminated.
- * @line: The contents of the read line.
- * @count: A counter keeping track of how many commands have been entered
- * into the shell.
- * @av: Name of the program running the shell
+ * _strlen - Entry point
+ * Description: 'find the string lenght'
+ *
+ * @str: 'string'
+ * Return: lenght of string
  */
-void create_child(char **param_array, char *line, int count, char **av)
+
+int _strlen(char *str)
 {
-	pid_t id;
-	int status;
-	int i;
-	int check;
-	struct stat buf;
-	char *tmp_command;
-	char *command;
+	int i = 0;
 
-	id = fork();
-	if (id == 0)
-	{
-		tmp_command = param_array[0];
-		command = path_finder(param_array[0]);
-		if (command == NULL)
-		{
-			/*Looking for file in current directory*/
-			check = stat(tmp_command, &buf);
-			if (check == -1)
-			{
-				error_printing(av[0], count, tmp_command);
-				print_str(": not found", 0);
-				single_free(2, line, tmp_command);
-				for (i = 1; param_array[i]; i++)
-					free(param_array[i]);
-				free(param_array);
-				exit(100);
-			}
-			/*file exist in cwd or has full path*/
-			command = tmp_command;
-		}
-		param_array[0] = command;
-		if (param_array[0] != NULL)
-		{
-			if (execve(param_array[0], param_array, environ) == -1)
-				exec_error(av[0], count, tmp_command);
-		}
-	}
-	else
-		wait(&status);
-}
-
-/**
- * token_interface - Meant to interact with other token functions, and make
- * them more accessible to other parts of the program.
- * @line: A string containing the raw user input.
- * @delim: A constant string containing the desired delimeter to tokenize line.
- * @token_count: A holder for the amount of tokens in a string.
- * Return: Upon success an array of tokens representing the command. Otherwise
- * returns NULL.
- */
-char **token_interface(char *line, const char *delim, int token_count)
-{
-	char **param_array;
-
-	token_count = count_token(line, delim);
-	if (token_count == -1)
-	{
-		free(line);
-		return (NULL);
-	}
-	param_array = tokenize(token_count, line, delim);
-	if (param_array == NULL)
-	{
-		free(line);
-		return (NULL);
-	}
-
-	return (param_array);
-}
-
-/**
- * tokenize - Separates a string into an array of tokens. DON'T FORGET TO FREE
- * on receiving function when using tokenize.
- * @token_count: An integer representing the amount of tokens in the array.
- * @line: String that is separated by an specified delimeter
- * @delim: The desired delimeter to separate tokens.
- * Return: Upon success a NULL terminated array of pointer to strings.
- * Otherwise returns NULL.
- */
-char **tokenize(int token_count, char *line, const char *delim)
-{
-	int i;
-	char **buffer;
-	char *token;
-	char *line_cp;
-
-	line_cp = _strdup(line);
-	buffer = malloc(sizeof(char *) * (token_count + 1));
-	if (buffer == NULL)
-		return (NULL);
-	token = strtok(line_cp, delim);
-	for (i = 0; token != NULL; i++)
-	{
-		buffer[i] = _strdup(token);
-		token = strtok(NULL, delim);
-	}
-	buffer[i] = NULL;
-	free(line_cp);
-	return (buffer);
-}
-
-/**
- * count_token - Counts tokens in the passed string.
- * @line: String that is separated by an specified delimeter
- * @delim: The desired delimeter to separate tokens.
- * Return: Upon success the total count of the tokens. Otherwise -1.
- */
-int count_token(char *line, const char *delim)
-{
-	char *str;
-	char *token;
-	int i;
-
-	str = _strdup(line);
 	if (str == NULL)
-		return (-1);
-	token = strtok(str, delim);
-	for (i = 0; token != NULL; i++)
-		token = strtok(NULL, delim);
-	free(str);
+		str = ""; /* end if */
+	while (*str != '\0')
+	{
+		i++;
+		str++;
+	} /* end while */
 	return (i);
-}
+} /* End function */
+
+
+/**
+ * _strcpy - Entry point
+ * Description: 'copy strings from src to dest'
+ *
+ * @dest: 'destination'
+ * @src: 'source'
+ * Return: copied string
+ */
+char *_strcpy(char *dest, char *src)
+{
+	int i = 0;
+
+	while (i <= _strlen(src))
+	{
+		dest[i] = src[i];
+		i++;
+	} /* end while */
+	return (dest);
+} /* end function */
+
+
+/**
+ * _strcat - Entry poiont
+ * Description: 'concatenate string'
+ *
+ * @dest: 'destination'
+ * @src: 'source'
+ * Return: concartenated string
+ */
+char *_strcat(char *dest, char *src)
+{
+	int i = 0;
+	char *temp = dest;
+
+	while (*temp != '\0')
+	{
+		temp++;
+	} /* end while */
+	while (i < _strlen(src))
+	{
+		*temp = src[i];
+		temp++;
+		i++;
+	} /* end while */
+	*temp = '\0';
+	return (dest);
+} /* end function */
+
+
+
+/**
+ * _strdup - Entry point
+ * Description: 'duplicate a string'
+ *
+ * @str: 'string'
+ * Return: returns a pointer to a newly allocated memory
+ * block containing a duplicate of the input string
+ */
+char *_strdup(char *str)
+{
+	char *myStr;
+	int i = 0;
+
+	if (str == NULL)
+	{
+		return (NULL);
+	} /* end if */
+	myStr = (char *)malloc(strlen(str) * sizeof(char) + 1);
+	if (myStr == NULL)
+	{
+		return (NULL);
+	} /* end if */
+	while (i <= (int)strlen(str))
+	{
+		myStr[i] = str[i];
+		i++;
+	} /* end if */
+	return (myStr);
+} /* end function */
+
+
+/**
+ * _strcmp - Entry point
+ * Description: 'compares two strings'
+ *
+ *
+ * @str1: 'string 1'
+ * @str2: 'stri'
+ *
+ * Return: 'If str1 is lexicographically less than str2,'
+ * 'strcmp returns a negative integer value (usually -1).'
+ * 'If str1 is lexicographically greater than str2,'
+ * 'strcmp returns a positive integer value (usually 1).'
+ * 'If str1 is lexicographically equal to str2,'
+ * 'strcmp returns zero.'
+ */
+int _strcmp(char *str1, char *str2)
+{
+	int i = 0;
+	int len1, len2;
+
+	if (str1 == NULL)
+		str1 = ""; /* end if */
+	if (str2 == NULL)
+		str2 = ""; /* end if */
+	len1 = _strlen(str1);
+	len2 = _strlen(str2);
+	if (len1 > len2)
+		return (1); /* end if */
+	else if (len1 < len2)
+		return (-1); /* end elif */
+	while (i < len1)
+	{
+		if (str1[i] != str2[i])
+		{
+			return (-1);
+		} /* end if */
+		i++;
+	} /* end while */
+	return (0);
+} /* end function */

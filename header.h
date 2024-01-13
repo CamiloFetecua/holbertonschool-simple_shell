@@ -1,63 +1,71 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef SHELL_H
+#define SHELL_H
 
-#include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <stdarg.h>
-#include <signal.h>
-#define PROMPT "👀👉 "
 
-
-/**
- * struct builtin_d - Defines the builtins functions.
- * @built: The name of the build in command.
- * @f: A pointer to the right builtin function.
- */
-typedef struct builtin_d
-{
-	char *built;
-	void (*f)(char *);
-} builtin_t;
+/* define buffer */
+#define buffer 1024
 
 extern char **environ;
 
-char **token_interface(char *, const char *, int);
-int count_token(char *, const char *);
-char **tokenize(int, char *, const char *);
-void create_child(char **, char *, int, char **);
-void parse_line(char *, size_t, int, char **);
-char *path_finder(char *);
-int str_len(char *);
-int find_path(char *);
-char **tokenize_path(int, char *);
-char *search_directories(char **, char *);
-char *build_path(char *, char *);
-void double_free(char **);
-void single_free(int, ...);
+/* path checker function */
+int check_path(char *path);
 
-/*CHEKER*/
-int built_in(char **, char *);
-void (*check_built_ins(char *))(char *);
-void exit_b(char *);
-void env_b(char *);
-void cd_b(char *);
+/* custom _which function  */
+char *_which(char *filename, char *path);
 
-/*functions clone*/
-int _strcmp(char *, char *);
-char *_strdup(char *);
-void print_str(char *, int);
-int print_number(int);
-int _write_char(char);
+/* string lenght function */
+int _strlen(char *str);
 
-/* command*/
-void error_printing(char *, int, char *);
-void exec_error(char *, int, char *);
+/* string copy function */
+char *_strcpy(char *dest, char *src);
+
+/* concatenate string */
+char *_strcat(char *dest, char *src);
+
+/* duplicate string */
+char *_strdup(char *str);
+
+/* compare strings */
+int _strcmp(char *str1, char *str2);
+
+/* execute command using execve */
+int exec_command(int *exit_status, char *fullpath, char *tokens[]);
+
+/* Print prompt and request input*/
+int handle_prompt(size_t *length, char **line);
+
+/* check for builtins */
+int check_builtins(int cnt, char **tokens, int *exit_status, char **argv);
+
+/* check if file is executable */
+int _ch(char **argv, char **tokens, char **fullpath, int *exit_status);
+
+/* get an environment variable*/
+char *_getenv(char *name);
+
+/*compare n characters of strings*/
+int _strncmp(char *str1, char *str2, int n);
+
+/* unset environment variable */
+int _unsetenv(char *name);
+
+/* Realloc implementation*/
+void *_realloc(void *ptr, size_t size);
+
+/*getline implementation*/
+ssize_t _getline(char **linePtr, size_t *buff_size, FILE *my_file);
+
+/* convert string to integer */
+int _atoi(char *str);
+
+/* error message */
+void error_message(char **tokens, char **argv, int *exit_status);
 
 #endif
