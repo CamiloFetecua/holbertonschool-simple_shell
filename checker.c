@@ -16,5 +16,6 @@ void error_message(char **tokens, char **argv, int *exit_status)
 	write(STDERR_FILENO, ": Illegal number: ", 18);
 	write(STDERR_FILENO, tokens[1], _strlen(tokens[1]));
 	write(STDERR_FILENO, &newline, 1);
+
 	*exit_status = 2;
 }

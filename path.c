@@ -1,5 +1,6 @@
 #include "header.h"
 
+
 /**
  * check_path - Entry point
  *

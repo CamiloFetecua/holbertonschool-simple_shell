@@ -35,7 +35,7 @@ int exec_command(int *exit_status, char *fullpath, char *tokens[])
 	if (fullpath != tokens[0])
 		free(fullpath);
 	return (0);
-} /* end function */
+}
 
 /**
  * handle_prompt - prints prompt and gets input

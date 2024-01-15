@@ -1,5 +1,6 @@
 #include "header.h"
 
+
 /**
  * _strlen - Entry point
  * Description: 'find the string lenght'
