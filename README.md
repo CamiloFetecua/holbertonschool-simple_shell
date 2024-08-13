@@ -58,4 +58,3 @@ Currently, there are no known issues or limitations with the Simple Shell.
 
 ## Collaborators
 * [Camilo Fetecua](https://github.com/CamiloFetecua)
-* [Manuela Marin](https://github.com/Manuela220704)
